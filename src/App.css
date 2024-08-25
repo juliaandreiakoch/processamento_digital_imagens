@@ -53,10 +53,25 @@ img {
 
 hr {
   width: 100%;
-  color: black
+  color: black;
 }
 
-.opened-image {
-  width: 500px;
-  height: 500px;
+.imagesContainer {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.imageBox {
+  width: 45%;
+  border: 2px solid #b1ba8e;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: #d3d8b4;
+}
+
+.imageBox img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
 }
