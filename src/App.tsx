@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import './App.css';
 import './assets/expandDown.png';
 import expandDownIcon from './assets/expandDown.png'
+import { Translate } from './functions/translate';
 
 function App() {
 
@@ -10,8 +11,8 @@ function App() {
   const [isFilterExpanded, setIsFilterExpanded] = useState<boolean>(false);
   const [isMorphologyExpanded, setIsMorphologyExpanded] = useState<boolean>(false);
   const [isExtractionExpanded, setIsExtractionExpanded] = useState<boolean>(false);
-  const [imageSrc1, setImageSrc1] = useState<string | null>(null);
-  const [imageSrc2, setImageSrc2] = useState<string | null>(null);
+  const [imageSrc1, setImageSrc1] = useState<string>("");
+  const [imageSrc2, setImageSrc2] = useState<string>("");
   const fileInputRef1 = useRef<HTMLInputElement>(null);
   const fileInputRef2 = useRef<HTMLInputElement>(null);
 
@@ -43,11 +44,14 @@ function App() {
     }
   };
 
-  const handleOpenImage2 = () => {
-    if (fileInputRef2.current) {
-      fileInputRef2.current.click();
-    }
-  };
+  const [deslocHorizontal, setDeslocHorizontal] = useState<number>(0);
+  const [deslocVertical, setDeslocVertical] = useState<number>(0);
+  const [translateClicked, setTranslateClicked] = useState<boolean>(false);
+
+  const handleTranslate = () => {
+    Translate(imageSrc1, deslocHorizontal, deslocVertical)
+  }
+
 
   return (
     <div>
@@ -67,16 +71,14 @@ function App() {
         <ul className='headerMenu'>
           <div className='expandedItem'>
             <button type="button" onClick={() => { setIsFileExpanded(!isFileExpanded) }}>
-              <div className='buttonImage'>
+              <div className='buttonImage' id="1">
                 arquivo
                 <img src={expandDownIcon} alt='Expand down icon' />
               </div>
             </button>
             {isFileExpanded && (
               <ul className='expandedList'>
-                <li onClick={handleOpenImage1}>Abrir imagem 1</li>
-                <hr />
-                <li onClick={handleOpenImage2}>Abrir imagem 2</li>
+                <li onClick={handleOpenImage1}>Abrir imagem</li>
                 <hr />
                 <li>Salvar imagem</li>
                 <hr />
@@ -88,14 +90,14 @@ function App() {
           </div>
           <div>
             <button onClick={() => { setIsTransformationExpanded(!isTransformationExpanded) }}>
-              <div className='buttonImage'>
+              <div className='buttonImage' id="1">
                 transformações geométricas
                 <img src={expandDownIcon} alt='Expand down icon' />
               </div>
             </button>
             {isTransformationExpanded && (
               <ul className='expandedList'>
-                <li>Transladar</li>
+                <li onClick={(() => setTranslateClicked(!translateClicked))}>Transladar</li>
                 <hr />
                 <li>Rotacionar</li>
                 <hr />
@@ -109,7 +111,7 @@ function App() {
           </div>
           <div>
             <button onClick={() => { setIsFilterExpanded(!isFilterExpanded) }}>
-              <div className='buttonImage'>
+              <div className='buttonImage' id="1">
                 filtros
                 <img src={expandDownIcon} alt='Expand down icon' />
               </div>
@@ -128,7 +130,7 @@ function App() {
           </div>
           <div>
             <button onClick={() => { setIsMorphologyExpanded(!isMorphologyExpanded) }}>
-              <div className='buttonImage'>
+              <div className='buttonImage' id="1">
                 morfologia matemática
                 <img src={expandDownIcon} alt='Expand down icon' />
               </div>
@@ -147,7 +149,7 @@ function App() {
           </div>
           <div>
             <button onClick={() => { setIsExtractionExpanded(!isExtractionExpanded) }}>
-              <div className='buttonImage'>
+              <div className='buttonImage' id="1">
                 extração de características
                 <img src={expandDownIcon} alt='Expand down icon' />
               </div>
@@ -160,13 +162,36 @@ function App() {
           </div>
         </ul>
       </nav>
+      {translateClicked && <div className='translate'>
+        <div className='translate-input'>
+          <p>Deslocamento Horizontal</p>
+          <input
+            type="text"
+            value={deslocHorizontal}
+            onChange={(e => (setDeslocHorizontal(parseInt(e.target.value))))}
+            placeholder="Digite algo..."
+            style={{ padding: '10px', fontSize: '16px' }}
+          />
+        </div>
+        <div className='translate-input'>
+          <p>Deslocamento Vertical</p>
+          <input
+            type="text"
+            value={deslocVertical}
+            onChange={(e => (setDeslocVertical(parseInt(e.target.value))))}
+            placeholder="Digite algo..."
+            style={{ padding: '10px', fontSize: '16px' }}
+          />
+        </div>
+        <div className='translatedImage'>
+          <button onClick={() => { handleTranslate(); setTranslateClicked(false) }}>Transladar</button>
+        </div>
+      </div>}
       <div className="imagesContainer">
         <div className="imageBox">
           {imageSrc1 && <img src={imageSrc1} alt="Imagem 1" />}
         </div>
-        <div className="imageBox">
-          {imageSrc2 && <img src={imageSrc2} alt="Imagem 2" />}
-        </div>
+        <canvas id="meuCanvas"></canvas>
       </div>
     </div>
   );

@@ -2,6 +2,10 @@ body {
   background-color: #eff5d8;
 }
 
+[id="1"] {
+  font-size: 15px;
+}
+
 .expandedList {
   display: flex;
   list-style-type: none;
@@ -11,10 +15,13 @@ body {
   background-color: #d3d8b4;
   border: 1px solid black;
   border-radius: 10px;
+  position: absolute;
+  top: 100%;
 }
 
 .headerMenu {
   display: flex;
+  position: relative;
   flex-direction: row;
   list-style-type: none;
   justify-content: space-between;
@@ -34,10 +41,12 @@ button {
   font-weight: 500;
   border-radius: 20px;
   padding: 5px;
+  cursor: pointer;
 }
 
 .expandedItem {
   display: flex;
+  position: relative;
   flex-direction: column;
 }
 
@@ -62,16 +71,61 @@ hr {
   margin-top: 20px;
 }
 
-.imageBox {
-  width: 45%;
+canvas {
+  width: 700px;
+  height: 550px;
+  border-radius: 10px;
+  padding: 10px;
+  border: 2px solid #b1ba8e;
+  border-radius: 10px;
+  background-color: #d3d8b4;
+  margin-top: 30px;
+}
+
+.imageBox img {
+  width: 700px;
+  height: 550px;
   border: 2px solid #b1ba8e;
   border-radius: 10px;
   padding: 10px;
   background-color: #d3d8b4;
+  margin-top: 30px;
 }
 
-.imageBox img {
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
+.translate {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.translate-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 15px;
+}
+
+.translate-input p {
+  margin: 5px;
+  font-weight: bold;
+}
+
+.translatedImage button {
+  background-color: black;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
+@media(max-width: 1100px) {
+  [id="1"] {
+    font-size: 10px;
+  }
+}
+
+@media(max-width: 800px) {
+  [id="1"] {
+    height: 20px;
+    font-size: 10px;
+  }
 }
