@@ -1,11 +1,12 @@
 import { useRef, useState } from 'react';
 import './App.css';
 import './assets/expandDown.png';
-import expandDownIcon from './assets/expandDown.png'
+import expandDownIcon from './assets/expandDown.png';
 import { Translate } from './functions/translate';
+import { Flip } from './functions/flip';
+import { Scale } from './functions/scale';
 
 function App() {
-
   const [isFileExpanded, setIsFileExpanded] = useState<boolean>(false);
   const [isTransformationExpanded, setIsTransformationExpanded] = useState<boolean>(false);
   const [isFilterExpanded, setIsFilterExpanded] = useState<boolean>(false);
@@ -13,6 +14,16 @@ function App() {
   const [isExtractionExpanded, setIsExtractionExpanded] = useState<boolean>(false);
   const [imageSrc, setImageSrc] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [deslocHorizontal, setDeslocHorizontal] = useState<number>(0);
+  const [deslocVertical, setDeslocVertical] = useState<number>(0);
+  const [translateClicked, setTranslateClicked] = useState<boolean>(false);
+
+  const [flipClicked, setFlipClicked] = useState<boolean>(false);
+  const [flipDirection, setFlipDirection] = useState<string>('horizontal');
+
+  const [scaleClicked, setScaleClicked] = useState<string | null>(null);
+  const [scaleFactor, setScaleFactor] = useState<number>(1.2);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -23,7 +34,7 @@ function App() {
       };
       reader.readAsDataURL(file);
     }
-  }
+  };
 
   const handleOpenImage = () => {
     if (fileInputRef.current) {
@@ -31,14 +42,20 @@ function App() {
     }
   };
 
-  const [deslocHorizontal, setDeslocHorizontal] = useState<number>(0);
-  const [deslocVertical, setDeslocVertical] = useState<number>(0);
-  const [translateClicked, setTranslateClicked] = useState<boolean>(false);
-
   const handleTranslate = () => {
-    Translate(imageSrc, deslocHorizontal, deslocVertical)
-  }
+    Translate(imageSrc, deslocHorizontal, deslocVertical);
+  };
 
+  const handleFlip = () => {
+    Flip(imageSrc, flipDirection);
+  };
+
+  const handleScale = () => {
+    if (scaleClicked) {
+      Scale(imageSrc, scaleFactor, scaleClicked);
+      setScaleClicked(null);
+    }
+  };
 
   return (
     <div>
@@ -78,15 +95,13 @@ function App() {
             </button>
             {isTransformationExpanded && (
               <ul className='expandedList'>
-                <li onClick={(() => setTranslateClicked(!translateClicked))}>Transladar</li>
+                <li onClick={() => setTranslateClicked(!translateClicked)}>Transladar</li>
                 <hr />
-                <li>Rotacionar</li>
+                <li onClick={() => setFlipClicked(!flipClicked)}>Espelhar</li>
                 <hr />
-                <li>Espelhar</li>
+                <li onClick={() => setScaleClicked('increase')}>Aumentar</li>
                 <hr />
-                <li>Aumentar</li>
-                <hr />
-                <li>Diminuir</li>
+                <li onClick={() => setScaleClicked('decrease')}>Diminuir</li>
               </ul>
             )}
           </div>
@@ -143,31 +158,68 @@ function App() {
           </div>
         </ul>
       </nav>
-      {translateClicked && <div className='translate'>
-        <div className='translate-input'>
-          <p>Deslocamento Horizontal</p>
-          <input
-            type="text"
-            value={deslocHorizontal}
-            onChange={(e => (setDeslocHorizontal(parseInt(e.target.value))))}
-            placeholder="Digite algo..."
-            style={{ padding: '10px', fontSize: '16px' }}
-          />
+
+      {translateClicked && (
+        <div className='translate'>
+          <div className='translate-input'>
+            <p>Deslocamento Horizontal</p>
+            <input
+              type="text"
+              value={deslocHorizontal}
+              onChange={(e => (setDeslocHorizontal(parseInt(e.target.value))))}
+              placeholder="Digite algo..."
+              style={{ padding: '10px', fontSize: '16px' }}
+            />
+          </div>
+          <div className='translate-input'>
+            <p>Deslocamento Vertical</p>
+            <input
+              type="text"
+              value={deslocVertical}
+              onChange={(e => (setDeslocVertical(parseInt(e.target.value))))}
+              placeholder="Digite algo..."
+              style={{ padding: '10px', fontSize: '16px' }}
+            />
+          </div>
+          <div className='translatedImage'>
+            <button onClick={() => { handleTranslate(); setTranslateClicked(false) }}>Transladar</button>
+          </div>
         </div>
-        <div className='translate-input'>
-          <p>Deslocamento Vertical</p>
-          <input
-            type="text"
-            value={deslocVertical}
-            onChange={(e => (setDeslocVertical(parseInt(e.target.value))))}
-            placeholder="Digite algo..."
-            style={{ padding: '10px', fontSize: '16px' }}
-          />
+      )}
+
+      {flipClicked && (
+        <div className='flip'>
+          <div className='flip-input'>
+            <p>Direção do Espelhamento</p>
+            <select value={flipDirection} onChange={(e) => setFlipDirection(e.target.value)}>
+              <option value="horizontal">Horizontal</option>
+              <option value="vertical">Vertical</option>
+            </select>
+          </div>
+          <div className='flippedImage'>
+            <button onClick={() => { handleFlip(); setFlipClicked(false) }}>Aplicar Espelhamento</button>
+          </div>
         </div>
-        <div className='translatedImage'>
-          <button onClick={() => { handleTranslate(); setTranslateClicked(false) }}>Transladar</button>
+      )}
+
+      {scaleClicked && (
+        <div className='scale'>
+          <div className='scale-input'>
+            <p>Fator de Escala</p>
+            <input
+              type="text"
+              value={scaleFactor}
+              onChange={(e) => setScaleFactor(parseFloat(e.target.value))}
+              placeholder="Digite o fator de escala..."
+              style={{ padding: '10px', fontSize: '16px' }}
+            />
+          </div>
+          <div className='scaledImage'>
+            <button onClick={handleScale}>Aplicar Escala</button>
+          </div>
         </div>
-      </div>}
+      )}
+
       <div className="imagesContainer">
         <div className="imageBox">
           {imageSrc && <img src={imageSrc} alt="Imagem 1" />}

@@ -134,3 +134,29 @@ canvas {
     font-size: 10px;
   }
 }
+
+.scale {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.scale-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 15px;
+}
+
+.scale-input p {
+  margin: 5px;
+  font-weight: bold;
+}
+
+.scaledImage button {
+  background-color: black;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
