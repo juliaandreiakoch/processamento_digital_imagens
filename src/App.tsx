@@ -11,36 +11,23 @@ function App() {
   const [isFilterExpanded, setIsFilterExpanded] = useState<boolean>(false);
   const [isMorphologyExpanded, setIsMorphologyExpanded] = useState<boolean>(false);
   const [isExtractionExpanded, setIsExtractionExpanded] = useState<boolean>(false);
-  const [imageSrc1, setImageSrc1] = useState<string>("");
-  const [imageSrc2, setImageSrc2] = useState<string>("");
-  const fileInputRef1 = useRef<HTMLInputElement>(null);
-  const fileInputRef2 = useRef<HTMLInputElement>(null);
+  const [imageSrc, setImageSrc] = useState<string>("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageUpload1 = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageSrc1(reader.result as string);
+        setImageSrc(reader.result as string);
       };
       reader.readAsDataURL(file);
     }
   }
 
-  const handleImageUpload2 = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageSrc2(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  const handleOpenImage1 = () => {
-    if (fileInputRef1.current) {
-      fileInputRef1.current.click();
+  const handleOpenImage = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
     }
   };
 
@@ -49,7 +36,7 @@ function App() {
   const [translateClicked, setTranslateClicked] = useState<boolean>(false);
 
   const handleTranslate = () => {
-    Translate(imageSrc1, deslocHorizontal, deslocVertical)
+    Translate(imageSrc, deslocHorizontal, deslocVertical)
   }
 
 
@@ -57,15 +44,9 @@ function App() {
     <div>
       <input
         type="file"
-        ref={fileInputRef1}
+        ref={fileInputRef}
         style={{ display: 'none' }}
-        onChange={handleImageUpload1}
-      />
-      <input
-        type="file"
-        ref={fileInputRef2}
-        style={{ display: 'none' }}
-        onChange={handleImageUpload2}
+        onChange={handleImageUpload}
       />
       <nav>
         <ul className='headerMenu'>
@@ -78,7 +59,7 @@ function App() {
             </button>
             {isFileExpanded && (
               <ul className='expandedList'>
-                <li onClick={handleOpenImage1}>Abrir imagem</li>
+                <li onClick={handleOpenImage}>Abrir imagem</li>
                 <hr />
                 <li>Salvar imagem</li>
                 <hr />
@@ -189,7 +170,7 @@ function App() {
       </div>}
       <div className="imagesContainer">
         <div className="imageBox">
-          {imageSrc1 && <img src={imageSrc1} alt="Imagem 1" />}
+          {imageSrc && <img src={imageSrc} alt="Imagem 1" />}
         </div>
         <canvas id="meuCanvas"></canvas>
       </div>
