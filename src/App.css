@@ -82,7 +82,7 @@ canvas {
   margin-top: 30px;
 }
 
-.imageBox img {
+.imageBox {
   width: 700px;
   height: 550px;
   border: 2px solid #b1ba8e;
@@ -90,6 +90,11 @@ canvas {
   padding: 10px;
   background-color: #d3d8b4;
   margin-top: 30px;
+}
+
+.imageBox img {
+  width: 700px;
+  height: 550px;
 }
 
 .translate {
