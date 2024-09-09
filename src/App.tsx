@@ -6,6 +6,7 @@ import { Translate } from './functions/translate';
 import { Flip } from './functions/flip';
 import { Scale } from './functions/scale';
 import { Rotate } from './functions/rotate';
+import { SaveImage } from './functions/saveImage';
 
 function App() {
   const [isFileExpanded, setIsFileExpanded] = useState<boolean>(false);
@@ -85,7 +86,7 @@ function App() {
               <ul className='expandedList'>
                 <li onClick={() => { handleOpenImage(); setIsFileExpanded(false) }}>Abrir imagem</li>
                 <hr />
-                <li onClick={() => { setIsFileExpanded(false) }}>Salvar imagem</li>
+                <li onClick={() => { SaveImage(); setIsFileExpanded(false) }}>Salvar imagem</li>
                 <hr />
                 <li onClick={() => { setIsFileExpanded(false) }}>Sobre</li>
                 <hr />
