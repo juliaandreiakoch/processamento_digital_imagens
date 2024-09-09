@@ -5,6 +5,7 @@ import expandDownIcon from './assets/expandDown.png';
 import { Translate } from './functions/translate';
 import { Flip } from './functions/flip';
 import { Scale } from './functions/scale';
+import { Rotate } from './functions/rotate';
 
 function App() {
   const [isFileExpanded, setIsFileExpanded] = useState<boolean>(false);
@@ -22,8 +23,11 @@ function App() {
   const [flipClicked, setFlipClicked] = useState<boolean>(false);
   const [flipDirection, setFlipDirection] = useState<string>('horizontal');
 
-  const [scaleClicked, setScaleClicked] = useState<string | null>(null);
-  const [scaleFactor, setScaleFactor] = useState<number>(1.2);
+  const [scaleClicked, setScaleClicked] = useState<"increase" | "decrease" | "">("");
+  const [scaleFactor, setScaleFactor] = useState<number>(0);
+
+  const [rotateClicked, setRotateClicked] = useState<boolean>(false);
+  const [rotateAngle, setRotateAngle] = useState<number>(0);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -46,6 +50,10 @@ function App() {
     Translate(imageSrc, deslocHorizontal, deslocVertical);
   };
 
+  const handleRotate = () => {
+    Rotate(imageSrc, rotateAngle)
+  }
+
   const handleFlip = () => {
     Flip(imageSrc, flipDirection);
   };
@@ -53,7 +61,6 @@ function App() {
   const handleScale = () => {
     if (scaleClicked) {
       Scale(imageSrc, scaleFactor, scaleClicked);
-      setScaleClicked(null);
     }
   };
 
@@ -76,13 +83,13 @@ function App() {
             </button>
             {isFileExpanded && (
               <ul className='expandedList'>
-                <li onClick={handleOpenImage}>Abrir imagem</li>
+                <li onClick={() => { handleOpenImage(); setIsFileExpanded(false) }}>Abrir imagem</li>
                 <hr />
-                <li>Salvar imagem</li>
+                <li onClick={() => { setIsFileExpanded(false) }}>Salvar imagem</li>
                 <hr />
-                <li>Sobre</li>
+                <li onClick={() => { setIsFileExpanded(false) }}>Sobre</li>
                 <hr />
-                <li>Sair</li>
+                <li onClick={() => { setIsFileExpanded(false) }}>Sair</li>
               </ul>
             )}
           </div>
@@ -95,13 +102,15 @@ function App() {
             </button>
             {isTransformationExpanded && (
               <ul className='expandedList'>
-                <li onClick={() => setTranslateClicked(!translateClicked)}>Transladar</li>
+                <li onClick={() => { setTranslateClicked(!translateClicked); setRotateClicked(false); setScaleClicked(''); setFlipClicked(false); setIsTransformationExpanded(false) }}>Transladar</li>
                 <hr />
-                <li onClick={() => setFlipClicked(!flipClicked)}>Espelhar</li>
+                <li onClick={() => { setFlipClicked(!flipClicked); setTranslateClicked(false); setRotateClicked(false); setScaleClicked(''); setIsTransformationExpanded(false) }}>Espelhar</li>
                 <hr />
-                <li onClick={() => setScaleClicked('increase')}>Aumentar</li>
+                <li onClick={() => { setScaleClicked('increase'); setTranslateClicked(false); setRotateClicked(false); setFlipClicked(false); setIsTransformationExpanded(false) }}>Aumentar</li>
                 <hr />
-                <li onClick={() => setScaleClicked('decrease')}>Diminuir</li>
+                <li onClick={() => { setScaleClicked('decrease'); setTranslateClicked(false); setRotateClicked(false); setFlipClicked(false); setIsTransformationExpanded(false) }}>Diminuir</li>
+                <hr />
+                <li onClick={() => { setRotateClicked(!rotateClicked); setTranslateClicked(false); setScaleClicked(''); setFlipClicked(false); setIsTransformationExpanded(false) }}>Rotacionar</li>
               </ul>
             )}
           </div>
@@ -160,8 +169,8 @@ function App() {
       </nav>
 
       {translateClicked && (
-        <div className='translate'>
-          <div className='translate-input'>
+        <div className='geometric-transformation'>
+          <div className='input'>
             <p>Deslocamento Horizontal</p>
             <input
               type="text"
@@ -171,7 +180,7 @@ function App() {
               style={{ padding: '10px', fontSize: '16px' }}
             />
           </div>
-          <div className='translate-input'>
+          <div className='input'>
             <p>Deslocamento Vertical</p>
             <input
               type="text"
@@ -181,41 +190,59 @@ function App() {
               style={{ padding: '10px', fontSize: '16px' }}
             />
           </div>
-          <div className='translatedImage'>
-            <button onClick={() => { handleTranslate(); setTranslateClicked(false) }}>Transladar</button>
+          <div className='geometric-transformation-image'>
+            <button onClick={() => { handleTranslate() }}>Transladar</button>
           </div>
         </div>
       )}
 
       {flipClicked && (
-        <div className='flip'>
-          <div className='flip-input'>
+        <div className='geometric-transformation'>
+          <div className='input'>
             <p>Direção do Espelhamento</p>
             <select value={flipDirection} onChange={(e) => setFlipDirection(e.target.value)}>
               <option value="horizontal">Horizontal</option>
               <option value="vertical">Vertical</option>
             </select>
           </div>
-          <div className='flippedImage'>
-            <button onClick={() => { handleFlip(); setFlipClicked(false) }}>Aplicar Espelhamento</button>
+          <div className='geometric-transformation-image'>
+            <button onClick={() => { handleFlip() }}>Espelhar</button>
           </div>
         </div>
       )}
 
       {scaleClicked && (
-        <div className='scale'>
-          <div className='scale-input'>
+        <div className='geometric-transformation'>
+          <div className='input'>
             <p>Fator de Escala</p>
             <input
-              type="text"
+              type="number"
               value={scaleFactor}
               onChange={(e) => setScaleFactor(parseFloat(e.target.value))}
               placeholder="Digite o fator de escala..."
               style={{ padding: '10px', fontSize: '16px' }}
             />
           </div>
-          <div className='scaledImage'>
-            <button onClick={handleScale}>Aplicar Escala</button>
+          <div className='geometric-transformation-image'>
+            <button onClick={() => handleScale()}>Aplicar Escala</button>
+          </div>
+        </div>
+      )}
+
+      {rotateClicked && (
+        <div className='geometric-transformation'>
+          <div className='input'>
+            <p>Ângulo de rotação</p>
+            <input
+              type="number"
+              value={rotateAngle}
+              onChange={(e) => setRotateAngle(parseFloat(e.target.value))}
+              placeholder="Digite o ângulo de rotação"
+              style={{ padding: '10px', fontSize: '16px' }}
+            />
+          </div>
+          <div className='geometric-transformation-image'>
+            <button onClick={() => { handleRotate(); }}>Rotacionar</button>
           </div>
         </div>
       )}
