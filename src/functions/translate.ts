@@ -1,6 +1,4 @@
 export const Translate = (image: string, deslocamentoX: number, deslocamentoY: number) => {
-  console.log("antes do listener");
-  console.log("FUNÇÃO TRANSLATE");
   const canvas = document.getElementById('meuCanvas') as HTMLCanvasElement;
   const ctx = canvas.getContext('2d');
 
