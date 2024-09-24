@@ -7,6 +7,7 @@ import { Flip } from './functions/flip';
 import { Scale } from './functions/scale';
 import { Rotate } from './functions/rotate';
 import { SaveImage } from './functions/saveImage';
+import { Grayscale } from './functions/grayscale';
 
 function App() {
   const [isFileExpanded, setIsFileExpanded] = useState<boolean>(false);
@@ -64,6 +65,10 @@ function App() {
       Scale(imageSrc, scaleFactor, scaleClicked);
     }
   };
+
+  const handleGrayscale = () => {
+    Grayscale(imageSrc)
+  }
 
   return (
     <div>
@@ -124,7 +129,7 @@ function App() {
             </button>
             {isFilterExpanded && (
               <ul className='expandedList'>
-                <li>Grayscale</li>
+                <li onClick={() => { handleGrayscale(); setIsFilterExpanded(false) }}>Grayscale</li>
                 <hr />
                 <li>Passa Baixa</li>
                 <hr />
