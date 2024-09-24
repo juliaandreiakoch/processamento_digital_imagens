@@ -31,6 +31,14 @@ function App() {
   const [rotateClicked, setRotateClicked] = useState<boolean>(false);
   const [rotateAngle, setRotateAngle] = useState<number>(0);
 
+
+  const restartGeometricTransformation = () => {
+    setTranslateClicked(false);
+    setRotateClicked(false); setScaleClicked('');
+    setFlipClicked(false);
+    setIsTransformationExpanded(false)
+  }
+
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -129,7 +137,7 @@ function App() {
             </button>
             {isFilterExpanded && (
               <ul className='expandedList'>
-                <li onClick={() => { handleGrayscale(); setIsFilterExpanded(false) }}>Grayscale</li>
+                <li onClick={() => { handleGrayscale(); setIsFilterExpanded(false); restartGeometricTransformation() }}>Grayscale</li>
                 <hr />
                 <li>Passa Baixa</li>
                 <hr />
