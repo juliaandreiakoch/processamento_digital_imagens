@@ -102,6 +102,12 @@ canvas {
   align-items: center;
 }
 
+.filter-transformation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .input {
   display: flex;
   flex-direction: column;
@@ -122,6 +128,20 @@ canvas {
 }
 
 .geometric-transformation select {
+  width: auto;
+  height: 40px;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.filter-transformation-image button {
+  background-color: black;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+}
+
+.filter-transformation select {
   width: auto;
   height: 40px;
   font-size: 16px;

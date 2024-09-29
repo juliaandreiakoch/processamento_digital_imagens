@@ -8,6 +8,8 @@ import { Scale } from './functions/scale';
 import { Rotate } from './functions/rotate';
 import { SaveImage } from './functions/saveImage';
 import { Grayscale } from './functions/grayscale';
+import { Brightness } from './functions/brightness';
+import { Contrast } from './functions/contrast';
 
 function App() {
   const [isFileExpanded, setIsFileExpanded] = useState<boolean>(false);
@@ -31,12 +33,17 @@ function App() {
   const [rotateClicked, setRotateClicked] = useState<boolean>(false);
   const [rotateAngle, setRotateAngle] = useState<number>(0);
 
+  const [brightness, setBrightness] = useState<number>(0);
+  const [contrast, setContrast] = useState<number>(0);
+  const [brightnessClicked, setBrightnessClicked] = useState<boolean>(false);
+  const [contrastClicked, setContrastClicked] = useState<boolean>(false);
 
   const restartGeometricTransformation = () => {
     setTranslateClicked(false);
-    setRotateClicked(false); setScaleClicked('');
+    setRotateClicked(false); 
+    setScaleClicked(''); 
     setFlipClicked(false);
-    setIsTransformationExpanded(false)
+    setIsTransformationExpanded(false);
   }
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +68,7 @@ function App() {
   };
 
   const handleRotate = () => {
-    Rotate(imageSrc, rotateAngle)
+    Rotate(imageSrc, rotateAngle);
   }
 
   const handleFlip = () => {
@@ -75,8 +82,16 @@ function App() {
   };
 
   const handleGrayscale = () => {
-    Grayscale(imageSrc)
-  }
+    Grayscale(imageSrc);
+  };
+
+  const handleBrightness = () => {
+    Brightness(imageSrc, brightness);
+  };
+  
+  const handleContrast = () => {
+    Contrast(imageSrc, contrast);
+  };
 
   return (
     <div>
@@ -102,8 +117,6 @@ function App() {
                 <li onClick={() => { SaveImage(); setIsFileExpanded(false) }}>Salvar imagem</li>
                 <hr />
                 <li onClick={() => { setIsFileExpanded(false) }}>Sobre</li>
-                <hr />
-                <li onClick={() => { setIsFileExpanded(false) }}>Sair</li>
               </ul>
             )}
           </div>
@@ -138,6 +151,10 @@ function App() {
             {isFilterExpanded && (
               <ul className='expandedList'>
                 <li onClick={() => { handleGrayscale(); setIsFilterExpanded(false); restartGeometricTransformation() }}>Grayscale</li>
+                <hr />
+                <li onClick={() => { setBrightnessClicked(!brightnessClicked); setContrastClicked(false); }}>Brilho</li>
+                <hr />
+                <li onClick={() => { setContrastClicked(!contrastClicked); setBrightnessClicked(false); }}>Contraste</li>
                 <hr />
                 <li>Passa Baixa</li>
                 <hr />
@@ -189,7 +206,7 @@ function App() {
             <input
               type="text"
               value={deslocHorizontal}
-              onChange={(e => (setDeslocHorizontal(parseInt(e.target.value))))}
+              onChange={(e) => setDeslocHorizontal(parseInt(e.target.value))}
               placeholder="Digite algo..."
               style={{ padding: '10px', fontSize: '16px' }}
             />
@@ -199,13 +216,13 @@ function App() {
             <input
               type="text"
               value={deslocVertical}
-              onChange={(e => (setDeslocVertical(parseInt(e.target.value))))}
+              onChange={(e) => setDeslocVertical(parseInt(e.target.value))}
               placeholder="Digite algo..."
               style={{ padding: '10px', fontSize: '16px' }}
             />
           </div>
           <div className='geometric-transformation-image'>
-            <button onClick={() => { handleTranslate() }}>Transladar</button>
+            <button onClick={handleTranslate}>Transladar</button>
           </div>
         </div>
       )}
@@ -220,7 +237,7 @@ function App() {
             </select>
           </div>
           <div className='geometric-transformation-image'>
-            <button onClick={() => { handleFlip() }}>Espelhar</button>
+            <button onClick={handleFlip}>Espelhar</button>
           </div>
         </div>
       )}
@@ -238,7 +255,7 @@ function App() {
             />
           </div>
           <div className='geometric-transformation-image'>
-            <button onClick={() => handleScale()}>Aplicar Escala</button>
+            <button onClick={handleScale}>Aplicar Escala</button>
           </div>
         </div>
       )}
@@ -256,10 +273,47 @@ function App() {
             />
           </div>
           <div className='geometric-transformation-image'>
-            <button onClick={() => { handleRotate(); }}>Rotacionar</button>
+            <button onClick={handleRotate}>Rotacionar</button>
           </div>
         </div>
       )}
+
+      {brightnessClicked && (
+        <div className='geometric-transformation'>
+          <div className='input'>
+            <p>Valor do Brilho</p>
+            <input
+              type="number"
+              value={brightness}
+              onChange={(e) => setBrightness(parseFloat(e.target.value))}
+              placeholder="Digite o valor do brilho"
+              style={{ padding: '10px', fontSize: '16px' }}
+            />
+          </div>
+          <div className='geometric-transformation-image'>
+            <button onClick={() => { handleBrightness(); setBrightnessClicked(false); }}>Aplicar Brilho</button>
+          </div>
+        </div>
+      )}
+
+      {contrastClicked && (
+        <div className='geometric-transformation'>
+          <div className='input' style={{ display: 'flex', alignItems: 'center' }}>
+            <p>Valor do Contraste</p>
+            <input
+              type="number"
+              value={contrast}
+              onChange={(e) => setContrast(parseFloat(e.target.value))}
+              placeholder="Digite o valor do contraste"
+              style={{ padding: '10px', fontSize: '16px', marginRight: '10px' }}
+            />
+          </div>
+          <div className='geometric-transformation-image'>
+            <button onClick={() => { handleContrast(); setContrastClicked(false); }}>Aplicar Contraste</button>
+          </div>
+        </div>
+      )}
+
 
       <div className="imagesContainer">
         <div className="imageBox">
