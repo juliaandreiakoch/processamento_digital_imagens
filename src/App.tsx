@@ -38,10 +38,12 @@ function App() {
   const [brightnessClicked, setBrightnessClicked] = useState<boolean>(false);
   const [contrastClicked, setContrastClicked] = useState<boolean>(false);
 
+  const [aboutSelected, setAboutSelected] = useState<boolean>(false);
+
   const restartGeometricTransformation = () => {
     setTranslateClicked(false);
-    setRotateClicked(false); 
-    setScaleClicked(''); 
+    setRotateClicked(false);
+    setScaleClicked('');
     setFlipClicked(false);
     setIsTransformationExpanded(false);
   }
@@ -88,13 +90,13 @@ function App() {
   const handleBrightness = () => {
     Brightness(imageSrc, brightness);
   };
-  
+
   const handleContrast = () => {
     Contrast(imageSrc, contrast);
   };
 
   return (
-    <div>
+    <div className='content'>
       <input
         type="file"
         ref={fileInputRef}
@@ -112,11 +114,11 @@ function App() {
             </button>
             {isFileExpanded && (
               <ul className='expandedList'>
-                <li onClick={() => { handleOpenImage(); setIsFileExpanded(false) }}>Abrir imagem</li>
+                <li onClick={() => { handleOpenImage(); setIsFileExpanded(false); setAboutSelected(false) }}>Abrir imagem</li>
                 <hr />
-                <li onClick={() => { SaveImage(); setIsFileExpanded(false) }}>Salvar imagem</li>
+                <li onClick={() => { SaveImage(); setIsFileExpanded(false); setAboutSelected(false) }}>Salvar imagem</li>
                 <hr />
-                <li onClick={() => { setIsFileExpanded(false) }}>Sobre</li>
+                <li onClick={() => { setAboutSelected(true); setIsFileExpanded(false) }}>Sobre</li>
               </ul>
             )}
           </div>
@@ -314,13 +316,29 @@ function App() {
         </div>
       )}
 
-
-      <div className="imagesContainer">
-        <div className="imageBox">
-          {imageSrc && <img src={imageSrc} alt="Imagem 1" />}
+      {!aboutSelected &&
+        <div className="imagesContainer">
+          <div className="imageBox">
+            {imageSrc && <img src={imageSrc} alt="Imagem 1" />}
+          </div>
+          <canvas id="meuCanvas"></canvas>
         </div>
-        <canvas id="meuCanvas"></canvas>
-      </div>
+      }
+
+      {aboutSelected &&
+        <div className='aboutContainer'>
+          <div className='aboutInfos'>
+            <h2>Processamento Digital de Imagens 2024/02 </h2>
+            <h3>Júlia Koch e Yolanda Colombo</h3>
+            <p>Este projeto consiste no desenvolvimento de um sistema
+              para processamento digital de imagens, utilizando as tecnologias
+              TypeScript e React. <br /> <br /> O sistema oferece funcionalidades essenciais,
+              como a aplicação de transformações geométricas, filtros de imagem,
+              além de operações de morfologia matemática.
+              <br /> <br />O objetivo é criar uma ferramenta para manipulação e análise de imagens digitais.</p>
+          </div>
+        </div>
+      }
     </div>
   );
 }

@@ -1,5 +1,13 @@
+html,
 body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
   background-color: #eff5d8;
+}
+
+#root {
+  height: 100%;
 }
 
 [id="1"] {
@@ -146,6 +154,38 @@ canvas {
   height: 40px;
   font-size: 16px;
   padding: 5px;
+}
+
+.aboutContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 90%;
+}
+
+.aboutInfos {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  padding-right: 10px;
+  padding-left: 10px;
+  text-align: justify;
+  border-radius: 30px;
+  background-color: #6f7557;
+}
+
+.aboutInfos p {
+  font-size: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
 }
 
 @media(max-width: 1100px) {
