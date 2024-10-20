@@ -10,6 +10,9 @@ import { SaveImage } from './functions/saveImage';
 import { Grayscale } from './functions/grayscale';
 import { Brightness } from './functions/brightness';
 import { Contrast } from './functions/contrast';
+import { Threshold } from './functions/threshold';
+import { Median } from './functions/median';
+import { Gauss } from './functions/gauss';
 
 function App() {
   const [isFileExpanded, setIsFileExpanded] = useState<boolean>(false);
@@ -37,6 +40,10 @@ function App() {
   const [contrast, setContrast] = useState<number>(0);
   const [brightnessClicked, setBrightnessClicked] = useState<boolean>(false);
   const [contrastClicked, setContrastClicked] = useState<boolean>(false);
+  const [thresholdClicked, setThresholdClicked] = useState(false);
+  const [thresholdValue, setThresholdValue] = useState<number>(128);
+  const [gaussClicked, setGaussClicked] = useState(false); 
+  const [kernelSize, setKernelSize] = useState<number>(3);
 
   const [aboutSelected, setAboutSelected] = useState<boolean>(false);
 
@@ -87,12 +94,8 @@ function App() {
     Grayscale(imageSrc);
   };
 
-  const handleBrightness = () => {
-    Brightness(imageSrc, brightness);
-  };
-
-  const handleContrast = () => {
-    Contrast(imageSrc, contrast);
+  const handleMedian = () => {
+    Median(imageSrc);
   };
 
   return (
@@ -154,15 +157,15 @@ function App() {
               <ul className='expandedList'>
                 <li onClick={() => { handleGrayscale(); setIsFilterExpanded(false); restartGeometricTransformation() }}>Grayscale</li>
                 <hr />
-                <li onClick={() => { setBrightnessClicked(!brightnessClicked); setContrastClicked(false); }}>Brilho</li>
+                <li onClick={() => { setBrightnessClicked(!brightnessClicked); setIsFilterExpanded(false); restartGeometricTransformation() }}>Brilho</li>
                 <hr />
-                <li onClick={() => { setContrastClicked(!contrastClicked); setBrightnessClicked(false); }}>Contraste</li>
+                <li onClick={() => { setContrastClicked(!contrastClicked); setIsFilterExpanded(false); restartGeometricTransformation() }}>Contraste</li>
                 <hr />
-                <li>Passa Baixa</li>
+                <li onClick={() => { setThresholdClicked(!thresholdClicked); setIsFilterExpanded(false); restartGeometricTransformation() }}>Threshold</li>
                 <hr />
-                <li>Passa Alta</li>
+                <li onClick={() => { handleMedian(); setIsFilterExpanded(false); restartGeometricTransformation() }}>Mediana</li>
                 <hr />
-                <li>Threshold</li>
+                <li onClick={() => { setGaussClicked(!gaussClicked); setIsFilterExpanded(false) }}>Gaussiano</li>
               </ul>
             )}
           </div>
@@ -293,7 +296,7 @@ function App() {
             />
           </div>
           <div className='geometric-transformation-image'>
-            <button onClick={() => { handleBrightness(); setBrightnessClicked(false); }}>Aplicar Brilho</button>
+            <button onClick={() => { Brightness(imageSrc, brightness); setBrightnessClicked(false); }}>Aplicar Brilho</button>
           </div>
         </div>
       )}
@@ -311,7 +314,43 @@ function App() {
             />
           </div>
           <div className='geometric-transformation-image'>
-            <button onClick={() => { handleContrast(); setContrastClicked(false); }}>Aplicar Contraste</button>
+            <button onClick={() => { Contrast(imageSrc, contrast); setContrastClicked(false); }}>Aplicar Contraste</button>
+          </div>
+        </div>
+      )}
+
+      {thresholdClicked && (
+        <div className='geometric-transformation'>
+          <div className='input'>
+            <p>Valor do Limiar</p>
+            <input
+              type="number"
+              value={thresholdValue}
+              onChange={(e) => setThresholdValue(parseInt(e.target.value))}
+              placeholder="Digite o valor do limiar"
+              style={{ padding: '10px', fontSize: '16px' }}
+            />
+          </div>
+          <div className='geometric-transformation-image'>
+            <button onClick={() => { Threshold(imageSrc, thresholdValue); setThresholdClicked(false); }}>Aplicar Limiar</button>
+          </div>
+        </div>
+      )}
+
+      {gaussClicked && (
+        <div className='geometric-transformation'>
+          <div className='input'>
+            <p>Valor ímpar para tamanho do Kernel</p>
+            <input
+              type="number"
+              value={kernelSize}
+              onChange={(e) => setKernelSize(parseInt(e.target.value))}
+              placeholder="Digite o tamanho do kernel"
+              style={{ padding: '10px', fontSize: '16px' }}
+            />
+          </div>
+          <div className='geometric-transformation-image'>
+            <button onClick={() => { Gauss(imageSrc, kernelSize); setGaussClicked(false); }}>Aplicar Filtro Gaussiano</button>
           </div>
         </div>
       )}
