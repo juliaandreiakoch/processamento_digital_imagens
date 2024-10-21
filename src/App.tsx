@@ -13,6 +13,7 @@ import { Contrast } from './functions/contrast';
 import { Threshold } from './functions/threshold';
 import { Median } from './functions/median';
 import { Gauss } from './functions/gauss';
+import { SobelEdgeDetection } from './functions/sobel';
 
 function App() {
   const [isFileExpanded, setIsFileExpanded] = useState<boolean>(false);
@@ -42,9 +43,8 @@ function App() {
   const [contrastClicked, setContrastClicked] = useState<boolean>(false);
   const [thresholdClicked, setThresholdClicked] = useState(false);
   const [thresholdValue, setThresholdValue] = useState<number>(128);
-  const [gaussClicked, setGaussClicked] = useState(false); 
+  const [gaussClicked, setGaussClicked] = useState(false);
   const [kernelSize, setKernelSize] = useState<number>(3);
-
   const [aboutSelected, setAboutSelected] = useState<boolean>(false);
 
   const restartGeometricTransformation = () => {
@@ -97,6 +97,10 @@ function App() {
   const handleMedian = () => {
     Median(imageSrc);
   };
+
+  const handleSobel = () => {
+    SobelEdgeDetection(imageSrc);
+  }
 
   return (
     <div className='content'>
@@ -166,6 +170,8 @@ function App() {
                 <li onClick={() => { handleMedian(); setIsFilterExpanded(false); restartGeometricTransformation() }}>Mediana</li>
                 <hr />
                 <li onClick={() => { setGaussClicked(!gaussClicked); setIsFilterExpanded(false) }}>Gaussiano</li>
+                <hr />
+                <li onClick={() => { handleSobel(); setIsFilterExpanded(false) }}>Detecção de bordas - Sobel</li>
               </ul>
             )}
           </div>
