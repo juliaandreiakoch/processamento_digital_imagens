@@ -14,6 +14,7 @@ import { Threshold } from './functions/threshold';
 import { Median } from './functions/median';
 import { Gauss } from './functions/gauss';
 import { SobelEdgeDetection } from './functions/sobel';
+import { RobertsEdgeDetection } from './functions/roberts';
 
 function App() {
   const [isFileExpanded, setIsFileExpanded] = useState<boolean>(false);
@@ -102,6 +103,10 @@ function App() {
     SobelEdgeDetection(imageSrc);
   }
 
+  const handleRoberts = () => {
+    RobertsEdgeDetection(imageSrc);
+  }
+
   return (
     <div className='content'>
       <input
@@ -172,6 +177,8 @@ function App() {
                 <li onClick={() => { setGaussClicked(!gaussClicked); setIsFilterExpanded(false) }}>Gaussiano</li>
                 <hr />
                 <li onClick={() => { handleSobel(); setIsFilterExpanded(false) }}>Detecção de bordas - Sobel</li>
+                <hr />
+                <li onClick={() => { handleRoberts(); setIsFilterExpanded(false) }}>Detecção de bordas - Roberts</li>
               </ul>
             )}
           </div>
