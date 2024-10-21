@@ -14,14 +14,14 @@ export const Brightness = (image: string, brightnessValue: number) => {
     canvas.width = imagem.width;
     canvas.height = imagem.height;
 
-    aplicarBrilho(brightnessValue);
+    applyBrightness(brightnessValue);
   };
 
   imagem.onerror = () => {
     console.error('Erro ao carregar a imagem.');
   };
 
-  const aplicarBrilho = (brightness: number) => {
+  const applyBrightness = (brightness: number) => {
     ctx.drawImage(imagem, 0, 0, canvas.width, canvas.height);
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;

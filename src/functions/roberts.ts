@@ -14,14 +14,14 @@ export const RobertsEdgeDetection = (image: string) => {
     canvas.width = imagem.width;
     canvas.height = imagem.height;
 
-    aplicarRoberts();
+    applyRoberts();
   };
 
   imagem.onerror = () => {
     console.error('Erro ao carregar a imagem.');
   };
 
-  const aplicarRoberts = () => {
+  const applyRoberts = () => {
     ctx.drawImage(imagem, 0, 0, canvas.width, canvas.height);
 
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);

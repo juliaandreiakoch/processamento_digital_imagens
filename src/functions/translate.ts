@@ -11,35 +11,24 @@ export const Translate = (image: string, deslocamentoX: number, deslocamentoY: n
   imagem.src = image;
 
   imagem.onload = () => {
-    // Define o tamanho do canvas para a dimensão da imagem
     canvas.width = imagem.width;
     canvas.height = imagem.height;
 
-    desenharImagem();
+    drawImage();
   };
 
   imagem.onerror = () => {
     console.error('Erro ao carregar a imagem.');
   };
 
-  // Função para desenhar a imagem com os deslocamentos atuais
-  const desenharImagem = () => {
+  const drawImage = () => {
     const deslocamentoHorizontal = deslocamentoX;
     const deslocamentoVertical = deslocamentoY;
 
-    // Limpa o canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Salva o estado atual do contexto
     ctx.save();
-
-    // Aplica a tradução
     ctx.translate(deslocamentoHorizontal, deslocamentoVertical);
-
-    // Desenha a imagem na posição transladada
     ctx.drawImage(imagem, 0, 0);
-
-    // Restaura o estado anterior do contexto
     ctx.restore();
   };
 }

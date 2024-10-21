@@ -14,14 +14,14 @@ export const Contrast = (image: string, contrastValue: number) => {
     canvas.width = imagem.width;
     canvas.height = imagem.height;
 
-    aplicarContraste(contrastValue);
+    applyContrast(contrastValue);
   };
 
   imagem.onerror = () => {
     console.error('Erro ao carregar a imagem.');
   };
 
-  const aplicarContraste = (contrast: number) => {
+  const applyContrast = (contrast: number) => {
     ctx.drawImage(imagem, 0, 0, canvas.width, canvas.height);
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;
@@ -29,7 +29,7 @@ export const Contrast = (image: string, contrastValue: number) => {
     const factor = (259 * (contrast + 255)) / (255 * (259 - contrast));
 
     for (let i = 0; i < data.length; i += 4) {
-      for (let j = 0; j < 3; j++) { 
+      for (let j = 0; j < 3; j++) {
         data[i + j] = factor * (data[i + j] - 128) + 128;
         data[i + j] = Math.min(255, Math.max(0, data[i + j]));
       }

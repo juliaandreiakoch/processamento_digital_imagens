@@ -14,14 +14,14 @@ export const Median = (image: string) => {
     canvas.width = imagem.width;
     canvas.height = imagem.height;
 
-    aplicarFiltroMediana();
+    applyMedian();
   };
 
   imagem.onerror = () => {
     console.error('Erro ao carregar a imagem.');
   };
 
-  const aplicarFiltroMediana = () => {
+  const applyMedian = () => {
     ctx.drawImage(imagem, 0, 0, canvas.width, canvas.height);
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const data = imageData.data;

@@ -14,14 +14,14 @@ export const SobelEdgeDetection = (image: string) => {
     canvas.width = imagem.width;
     canvas.height = imagem.height;
 
-    Sobel();
+    applySobel();
   };
 
   imagem.onerror = () => {
     console.error('Erro ao carregar a imagem.');
   };
 
-  const Sobel = () => {
+  const applySobel = () => {
     ctx.drawImage(imagem, 0, 0, canvas.width, canvas.height);
 
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
