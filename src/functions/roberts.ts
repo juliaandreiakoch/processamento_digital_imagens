@@ -32,7 +32,6 @@ export const RobertsEdgeDetection = (image: string) => {
     const robertsData = new Uint8ClampedArray(data.length);
     const grayscaleData = new Uint8ClampedArray(width * height);
 
-    // Converter para escala de cinza
     for (let i = 0; i < data.length; i += 4) {
       const red = data[i];
       const green = data[i + 1];
@@ -41,12 +40,10 @@ export const RobertsEdgeDetection = (image: string) => {
       grayscaleData[i / 4] = grayscale;
     }
 
-    // Aplicar o operador de Roberts
     for (let y = 0; y < height - 1; y++) {
       for (let x = 0; x < width - 1; x++) {
         const pos = y * width + x;
 
-        // Pega o pixel atual e o pixel diagonal
         const Gx = grayscaleData[pos] - grayscaleData[pos + width + 1];
         const Gy = grayscaleData[pos + 1] - grayscaleData[pos + width];
 
