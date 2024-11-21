@@ -123,6 +123,11 @@ canvas {
   margin: 15px;
 }
 
+.input-checkbox {
+  display: flex;
+  flex-direction: column;
+}
+
 .input p {
   margin: 5px;
   font-weight: bold;

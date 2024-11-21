@@ -15,6 +15,7 @@ import { Median } from './functions/median';
 import { Gauss } from './functions/gauss';
 import { SobelEdgeDetection } from './functions/sobel';
 import { RobertsEdgeDetection } from './functions/roberts';
+import { Dilatation } from './functions/dilatation';
 
 function App() {
   const [isFileExpanded, setIsFileExpanded] = useState<boolean>(false);
@@ -37,6 +38,12 @@ function App() {
 
   const [rotateClicked, setRotateClicked] = useState<boolean>(false);
   const [rotateAngle, setRotateAngle] = useState<number>(0);
+
+  const [dilatationClicked, setDilatationClicked] = useState<boolean>(false);
+  const [dilatationElement, setDilatationElement] = useState<string>('');
+
+  const [erosionClicked, setErosionClicked] = useState<boolean>(false);
+  const [erosionElement, setErosionElement] = useState<string>('');
 
   const [brightness, setBrightness] = useState<number>(0);
   const [contrast, setContrast] = useState<number>(0);
@@ -191,9 +198,9 @@ function App() {
             </button>
             {isMorphologyExpanded && (
               <ul className='expandedList'>
-                <li>Dilatação</li>
+                <li onClick={() => { setDilatationClicked(true); setIsMorphologyExpanded(false); setErosionClicked(false) }}>Dilatação</li>
                 <hr />
-                <li>Erosão</li>
+                <li onClick={() => { setErosionClicked(true); setIsMorphologyExpanded(false); setDilatationClicked(false) }}>Erosão</li>
                 <hr />
                 <li>Abertura</li>
                 <hr />
@@ -364,6 +371,104 @@ function App() {
           </div>
           <div className='geometric-transformation-image'>
             <button onClick={() => { Gauss(imageSrc, kernelSize); setGaussClicked(false); }}>Aplicar Filtro Gaussiano</button>
+          </div>
+        </div>
+      )}
+
+      {dilatationClicked && (
+        <div className='geometric-transformation'>
+          <div className='input'>
+            <p>Elemento estruturante</p>
+            <div className='input-checkbox'>
+              <label>
+                <input
+                  type="radio"
+                  name="dilatation"
+                  onChange={() => setDilatationElement("cruz3")}
+                  style={{ padding: '10px', fontSize: '16px' }}
+                />
+                Cruz - 3x3
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="dilatation"
+                  onChange={() => setDilatationElement("quadrado3")}
+                  style={{ padding: '10px', fontSize: '16px' }}
+                />
+                Quadrado - 3x3
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="dilatation"
+                  onChange={() => setDilatationElement("cruz5")}
+                  style={{ padding: '10px', fontSize: '16px' }}
+                />
+                Cruz - 5x5
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="dilatation"
+                  onChange={() => setDilatationElement("quadrado5")}
+                  style={{ padding: '10px', fontSize: '16px' }}
+                />
+                Quadrado - 5x5
+              </label>
+            </div>
+          </div>
+          <div className='geometric-transformation-image'>
+            <button onClick={() => { Dilatation(imageSrc, dilatationElement) }}>Aplicar Dilatação</button>
+          </div>
+        </div>
+      )}
+
+      {erosionClicked && (
+        <div className='geometric-transformation'>
+          <div className='input'>
+            <p>Elemento estruturante</p>
+            <div className='input-checkbox'>
+              <label>
+                <input
+                  type="radio"
+                  name="erosion"
+                  onChange={() => setErosionElement("cruz3")}
+                  style={{ padding: '10px', fontSize: '16px' }}
+                />
+                Cruz - 3x3
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="erosion"
+                  onChange={() => setErosionElement("quadrado3")}
+                  style={{ padding: '10px', fontSize: '16px' }}
+                />
+                Quadrado - 3x3
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="erosion"
+                  onChange={() => setErosionElement("cruz5")}
+                  style={{ padding: '10px', fontSize: '16px' }}
+                />
+                Cruz - 5x5
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="erosion"
+                  onChange={() => setErosionElement("quadrado5")}
+                  style={{ padding: '10px', fontSize: '16px' }}
+                />
+                Quadrado - 5x5
+              </label>
+            </div>
+          </div>
+          <div className='geometric-transformation-image'>
+            <button onClick={() => { Dilatation(imageSrc, dilatationElement) }}>Aplicar Erosão</button>
           </div>
         </div>
       )}
