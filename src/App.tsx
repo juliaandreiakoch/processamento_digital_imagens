@@ -16,6 +16,7 @@ import { Gauss } from './functions/gauss';
 import { SobelEdgeDetection } from './functions/sobel';
 import { RobertsEdgeDetection } from './functions/roberts';
 import { Dilatation } from './functions/dilatation';
+import { Erosion } from './functions/erosion';
 
 function App() {
   const [isFileExpanded, setIsFileExpanded] = useState<boolean>(false);
@@ -114,6 +115,22 @@ function App() {
     RobertsEdgeDetection(imageSrc);
   }
 
+  const handleOpening = () => {
+    const erodedImage = Erosion(imageSrc, 'quadrado3');
+  
+    if (erodedImage) {
+      Dilatation(erodedImage, 'quadrado3');
+    }
+  };
+
+  const handleClosing = () => {
+    const closedImage = Dilatation(imageSrc, 'quadrado3');
+  
+    if (closedImage) {
+      Erosion(closedImage, 'quadrado3');
+    }
+  };
+
   return (
     <div className='content'>
       <input
@@ -202,9 +219,9 @@ function App() {
                 <hr />
                 <li onClick={() => { setErosionClicked(true); setIsMorphologyExpanded(false); setDilatationClicked(false) }}>Erosão</li>
                 <hr />
-                <li>Abertura</li>
+                <li onClick={() => { handleOpening(); setIsMorphologyExpanded(false); }}>Abertura</li>
                 <hr />
-                <li>Fechamento</li>
+                <li onClick={() => { handleClosing(); setIsMorphologyExpanded(false); }}>Fechamento</li>
               </ul>
             )}
           </div>
@@ -468,7 +485,7 @@ function App() {
             </div>
           </div>
           <div className='geometric-transformation-image'>
-            <button onClick={() => { Dilatation(imageSrc, dilatationElement) }}>Aplicar Erosão</button>
+            <button onClick={() => { Erosion(imageSrc, dilatationElement) }}>Aplicar Erosão</button>
           </div>
         </div>
       )}

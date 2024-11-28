@@ -1,4 +1,4 @@
-export const Erosion = (image: string, maskType: string) => {
+export const Erosion = (image: string, maskType: string): string | void => {
   const canvas = document.getElementById('meuCanvas') as HTMLCanvasElement;
   const ctx = canvas.getContext('2d');
 
@@ -27,8 +27,8 @@ export const Erosion = (image: string, maskType: string) => {
     const data = imageData.data;
 
     const kernel = getKernel(maskType);
-    const kernelSize = kernel.length; // Largura e altura do kernel
-    const offset = Math.floor(kernelSize / 2); // Calcula o deslocamento do kernel
+    const kernelSize = kernel.length;
+    const offset = Math.floor(kernelSize / 2);
 
     const width = canvas.width;
     const height = canvas.height;
@@ -61,6 +61,8 @@ export const Erosion = (image: string, maskType: string) => {
     }
 
     ctx.putImageData(new ImageData(tempData, width, height), 0, 0);
+
+    return canvas.toDataURL();
   };
 
   const getKernel = (maskType: string) => {

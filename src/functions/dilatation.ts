@@ -1,4 +1,4 @@
-export const Dilatation = (image: string, maskType: string) => {
+export const Dilatation = (image: string, maskType: string): string | void => {
   const canvas = document.getElementById('meuCanvas') as HTMLCanvasElement;
   const ctx = canvas.getContext('2d');
 
@@ -61,6 +61,8 @@ export const Dilatation = (image: string, maskType: string) => {
     }
 
     ctx.putImageData(new ImageData(tempData, width, height), 0, 0);
+
+    return canvas.toDataURL();
   };
 
   const getKernel = (maskType: string) => {
