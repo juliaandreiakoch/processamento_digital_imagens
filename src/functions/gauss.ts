@@ -1,38 +1,38 @@
-export const Gauss = (image: string, kernelSize: number) => {
+export const Gauss = (image: string, kernelSize: number): Promise<string> => {
+  return new Promise((resolve, reject) => {
     const canvas = document.getElementById('meuCanvas') as HTMLCanvasElement;
     const ctx = canvas.getContext('2d');
-  
+
     if (!ctx) {
       console.error('Contexto do canvas não está disponível.');
+      reject('Canvas não disponível');
       return;
     }
-  
-    const imgElement = document.querySelector('.imageBox img') as HTMLImageElement;
-  
-    if (!imgElement) {
-      console.error('Imagem não encontrada.');
-      return;
-    }
-  
+
+    const imgElement = new Image();
     imgElement.src = image;
-  
+
     imgElement.onload = () => {
       canvas.width = imgElement.width;
       canvas.height = imgElement.height;
-  
+
       ctx.drawImage(imgElement, 0, 0, canvas.width, canvas.height);
       const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
       const data = imageData.data;
-  
+
       const gaussianKernel = generateGaussianKernel(kernelSize);
-  
+
       const newImageData = applyConvolution(data, imgElement.width, imgElement.height, gaussianKernel);
       ctx.putImageData(newImageData, 0, 0);
-    };
-  
-    imgElement.onerror = () => {
-      console.error('Erro ao carregar a imagem.');
-    };
+
+      resolve(canvas.toDataURL()); // Retorna a imagem processada como string
+      };
+
+      imgElement.onerror = () => {
+        console.error('Erro ao carregar a imagem.');
+        reject('Erro ao carregar a imagem.');
+      };
+    });
   };
   
   const generateGaussianKernel = (size: number): number[] => {

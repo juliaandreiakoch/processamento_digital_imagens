@@ -17,6 +17,7 @@ import { SobelEdgeDetection } from './functions/sobel';
 import { RobertsEdgeDetection } from './functions/roberts';
 import { Dilatation } from './functions/dilatation';
 import { Erosion } from './functions/erosion';
+import { CountDominoDots } from './functions/countDominoDots';
 
 function App() {
   const [isFileExpanded, setIsFileExpanded] = useState<boolean>(false);
@@ -131,6 +132,29 @@ function App() {
     }
   };
 
+  const handleChallenge = async () => {
+    const kernelSize = 5;
+  
+    try {
+      console.log('Iniciando desafio...');
+      const grayscale = await Grayscale(imageSrc); // Aguarda a Promise resolver
+      console.log('Imagem em escala de cinza gerada:', grayscale);
+  
+      if (grayscale) {
+        const gauss = await Gauss(grayscale, kernelSize); // Aguarda Gauss também
+        console.log('Imagem com filtro Gaussiano gerada:', gauss);
+  
+        if (gauss) {
+          const result = await CountDominoDots(gauss);
+          console.log('Resultado dos pontos do dominó:', result);
+          alert(result);
+        }
+      }
+    } catch (error) {
+      console.error('Erro ao processar o desafio:', error);
+    }
+  };
+  
   return (
     <div className='content'>
       <input
@@ -234,7 +258,7 @@ function App() {
             </button>
             {isExtractionExpanded && (
               <ul className='expandedList'>
-                <li>Desafio</li>
+                <li onClick={() => { handleChallenge() }}>Desafio</li>
               </ul>
             )}
           </div>
