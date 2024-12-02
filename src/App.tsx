@@ -27,26 +27,19 @@ function App() {
   const [isExtractionExpanded, setIsExtractionExpanded] = useState<boolean>(false);
   const [imageSrc, setImageSrc] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement>(null);
-
   const [deslocHorizontal, setDeslocHorizontal] = useState<number>(0);
   const [deslocVertical, setDeslocVertical] = useState<number>(0);
   const [translateClicked, setTranslateClicked] = useState<boolean>(false);
-
   const [flipClicked, setFlipClicked] = useState<boolean>(false);
   const [flipDirection, setFlipDirection] = useState<string>('horizontal');
-
   const [scaleClicked, setScaleClicked] = useState<"increase" | "decrease" | "">("");
   const [scaleFactor, setScaleFactor] = useState<number>(0);
-
   const [rotateClicked, setRotateClicked] = useState<boolean>(false);
   const [rotateAngle, setRotateAngle] = useState<number>(0);
-
   const [dilatationClicked, setDilatationClicked] = useState<boolean>(false);
   const [dilatationElement, setDilatationElement] = useState<string>('');
-
   const [erosionClicked, setErosionClicked] = useState<boolean>(false);
   const [erosionElement, setErosionElement] = useState<string>('');
-
   const [brightness, setBrightness] = useState<number>(0);
   const [contrast, setContrast] = useState<number>(0);
   const [brightnessClicked, setBrightnessClicked] = useState<boolean>(false);
@@ -118,7 +111,7 @@ function App() {
 
   const handleOpening = () => {
     const erodedImage = Erosion(imageSrc, 'quadrado3');
-  
+
     if (erodedImage) {
       Dilatation(erodedImage, 'quadrado3');
     }
@@ -126,7 +119,7 @@ function App() {
 
   const handleClosing = () => {
     const closedImage = Dilatation(imageSrc, 'quadrado3');
-  
+
     if (closedImage) {
       Erosion(closedImage, 'quadrado3');
     }
@@ -134,19 +127,16 @@ function App() {
 
   const handleChallenge = async () => {
     const kernelSize = 5;
-  
+
     try {
       console.log('Iniciando desafio...');
-      const grayscale = await Grayscale(imageSrc); // Aguarda a Promise resolver
-      console.log('Imagem em escala de cinza gerada:', grayscale);
-  
+      const grayscale = await Grayscale(imageSrc);
+
       if (grayscale) {
-        const gauss = await Gauss(grayscale, kernelSize); // Aguarda Gauss também
-        console.log('Imagem com filtro Gaussiano gerada:', gauss);
-  
+        const gauss = await Gauss(grayscale, kernelSize);
+
         if (gauss) {
           const result = await CountDominoDots(gauss);
-          console.log('Resultado dos pontos do dominó:', result);
           alert(result);
         }
       }
@@ -154,7 +144,7 @@ function App() {
       console.error('Erro ao processar o desafio:', error);
     }
   };
-  
+
   return (
     <div className='content'>
       <input

@@ -107,7 +107,7 @@ export const CountDominoDots = async (imageSrc: string): Promise<string> => {
       };
 
       const tolerance = 5;
-      const upperDots = countDotsInRegion(0, middleLineY - tolerance);
+      const upperDots = countDotsInRegion(0, middleLineY - tolerance) - 1;
       const lowerDots = countDotsInRegion(middleLineY + tolerance, height);
 
       resolve(
