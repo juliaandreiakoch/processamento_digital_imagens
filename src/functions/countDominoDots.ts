@@ -80,12 +80,12 @@ export const CountDominoDots = async (imageSrc: string): Promise<string> => {
         let count = 0;
 
         for (let y = startY; y < endY; y++) {
-          for (let x = 0; x < width; x++) {
+          for (let x = 40; x < width - 40; x++) {
             if (!visited.has(`${x}, ${y}`)) {
               const [r, g, b] = getPixelColor(x, y);
               if (isDark(r, g, b)) {
                 const regionSize = floodFill(x, y);
-                if (regionSize > 60) { // Ajuste para ignorar ruídos
+                if (regionSize > 150) { // Ajuste para ignorar ruídos
                   const isNearby = detectedDots.some(
                     (dot) =>
                       Math.sqrt(
@@ -106,9 +106,9 @@ export const CountDominoDots = async (imageSrc: string): Promise<string> => {
         return count;
       };
 
-      const tolerance = 5;
-      const upperDots = countDotsInRegion(0, middleLineY - tolerance) - 1;
-      const lowerDots = countDotsInRegion(middleLineY + tolerance, height);
+      const tolerance = 20;
+      const upperDots = countDotsInRegion(30, middleLineY - tolerance);
+      const lowerDots = countDotsInRegion(middleLineY + tolerance, height - 30);
 
       resolve(
         `Pontos na parte superior: ${upperDots}\nPontos na parte inferior: ${lowerDots}`
